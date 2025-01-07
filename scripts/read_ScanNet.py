@@ -5,7 +5,7 @@ import os
 
 import limap.base
 import limap.util.io as limapio
-import limap.pointsfm as _psfm
+from limap.pointsfm.model_converter import convert_imagecols_to_colmap
 
 
 
@@ -87,14 +87,20 @@ if __name__ == "__main__":
     scene_dir = Path("/local/home/vfrawa/data/ScanNet/scans/scene0191_00")
     sensordata_dir = scene_dir / "sensorstream"
     images_dir = scene_dir / "sensorstream" #"low_light05_no_noise_no_smaller_contrast"
-    output_dir = scene_dir / "formats_shortpath"
+    output_dir = scene_dir / "formats_sample"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     cameras, camimages, camviews = read_images_and_poses(sensordata_dir, images_dir)
+
+    minimal = True
+    if (minimal):
+        camimages = {i: camimages[i] for i in range(101) if i % 10 == 0}
+        camviews = {i: camviews[i] for i in range(101) if i % 10 == 0}
+
     imagecols = limap.base.ImageCollection(cameras, camimages)
 
     limapio.save_npy(output_dir/"limap_imagecols.npy", imagecols.as_dict())
 
-    _psfm.convert_imagecols_to_colmap(imagecols, output_dir/"colmap_format_known_poses")
+    convert_imagecols_to_colmap(imagecols, output_dir/"empty_colmap_model_known_poses")
 

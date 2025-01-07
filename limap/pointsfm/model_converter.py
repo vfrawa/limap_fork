@@ -124,7 +124,7 @@ def convert_imagecols_to_colmap(imagecols, colmap_output_path):
             qvec=qvec,
             tvec=tvec,
             camera_id=cam_id,
-            #name=imname,
+            # name=imname,
             name=os.path.basename(imname), #TODO: Frawa changed 
             xys=[],
             point3D_ids=[],
